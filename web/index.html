@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <title>ESP32-SNMP-SENSOR</title>
+  <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+  <style>
+    div,fieldset,input,select{padding:5px;font-size:1em;}fieldset{background:#4f4f4f;}p{margin:0.5em 0;}input{width:100%;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;background:#dddddd;color:#000000;}input[type=checkbox],input[type=radio]{width:1em;margin-right:6px;vertical-align:-1px;}input[type=range]{width:99%;}select{width:100%;background:#dddddd;color:#000000;}textarea{resize:vertical;width:98%;height:318px;padding:5px;overflow:auto;background:#1f1f1f;color:#65c115;}body{text-align:center;font-family:verdana,sans-serif;background:#252525;}td{padding:0px;}button{border:0;border-radius:0.3rem;background:#1fa3ec;color:#faffff;line-height:2.4rem;font-size:1.2rem;width:100%;-webkit-transition-duration:0.4s;transition-duration:0.4s;cursor:pointer;}button:hover{background:#0e70a4;}.bred{background:#d43535;}.bred:hover{background:#931f1f;}.bgrn{background:#47c266;}.bgrn:hover{background:#5aaf6f;}a{color:#1fa3ec;text-decoration:none;}.p{float:left;text-align:left;}.q{float:right;text-align:right;}.r{border-radius:0.3em;padding:2px;margin:6px 2px;}.hf{display:none;}.container{padding:0px;}#bar{background-color:#1fa3ef;width:0%;height:20px;padding:0px;}#barbg{padding:0px;background-color:#dddddd;}
+  </style>
+</head>
+<body>
+  <div style="text-align:left;display:inline-block;color:#eaeaea;min-width:340px;">
+    <div id="settingsDlg" class="container">
+      <div style="text-align:center;color:#eaeaea;">
+        <noscript>To use this page, please enable JavaScript<br></noscript>
+        <h3>Settings</h3>
+      </div>
+
+      <form id="settingsForm">
+        <fieldset>
+          <legend>Mode</legend>
+          <p>
+            <input type="radio" id="ap" name="wifi_opmode" value="0" />
+            <label>WiFi AP</label>
+            <input type="radio" id="sta" name="wifi_opmode" value="1" />
+            <label>WiFi Client</label>
+            <input type="radio" id="eth" name="wifi_opmode" value="2" />
+            <label>Ethernet</label>
+          </p>
+        </fieldset>
+        <div id="but3d" style="display: block;"></div>
+        <fieldset>
+          <legend>WiFi</legend>
+          <p>
+            <label>SSID *</label>
+            <input type="text" name="wifi_ssid" class="text" maxlength="32" autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>Password *</label>
+            <input type="password" name="wifi_secret" class="text" maxlength="64" autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+          <p>
+            <input type="checkbox" name="wifi_powersave" value="true" />
+            <label>Powersave</label>
+          </p>
+          <p>
+            <input type="checkbox" name="wifi_ap_fallback" value="true" />
+            <label>AP Fallback</label>
+          </p>
+          <p>
+        </fieldset>
+        <div id="but3d" style="display: block;"></div>
+        <fieldset>
+          <legend>Network</legend>
+          <fieldset>
+            <legend>IP Mode</legend>
+            <p>
+              <input type="radio" id="static_ip_off" name="static_ip" value="false" />
+              <label>DHCP</label>
+              <input type="radio" id="static_ip_on" name="static_ip" value="true" />
+              <label>Static IP</label>
+            </p>
+          </fieldset>
+          <p>
+          <p>
+            <label>Hostname *</label>
+            <input type="text" name="wifi_hostname" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>IP Address</label>
+            <input type="text" name="ip_addr" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>IP Netmask</label>
+            <input type="text" name="ip_netmask" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>IP Gateway</label>
+            <input type="text" name="ip_gw" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>IP DNS</label>
+            <input type="text" name="ip_dns" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+        </fieldset>
+        <div id="but3d" style="display: block;"></div>
+        <fieldset>
+          <legend>SNMP</legend>
+          <p>
+            <label>Contact</label>
+            <input type="text" name="snmp_contact" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>Location</label>
+            <input type="text" name="snmp_location" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>Read Community</label>
+            <input type="text" name="snmp_ro_community" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+            <label>Write Community</label>
+            <input type="text" name="snmp_rw_community" class="text" required autocorrect="off" autocapitalize="off" spellcheck="false">
+          </p>
+          <p>
+        </fieldset>
+      </form>
+      <div id="but3d" style="display: block;"></div>
+      <fieldset>
+        <legend>Status</legend>
+        <div id="status"></div>
+        <div id="statusmsg"></div>
+      </fieldset>
+
+      <div id="but3d" style="display: block;"></div>
+      <p>
+      <button id="save" class="button bgrn">Save &amp; Restart</button>
+      <div id="but3d" style="display: block;"></div>
+      <p></p>
+      <div id="but3d" style="display: block;"></div>
+      <p></p>
+      <button id="reboot" class="button">Restart</button>
+      <div id="but3d" style="display: block;"></div>
+      <button id="factoryreset" class="button bred">Factory Reset</button>
+      <div id="but3d" style="display: block;"></div>
+      <button id="fwupdate" class="button">Firmware Update</button>
+    </div>
+
+    <div id="uploadDlg" style="display:none;">
+      <form id="uploadForm">
+        <fieldset>
+          <legend>File</legend>
+          <p>
+            <label>Choose File</label>
+            <input type="file" id="filename">
+          </p>
+        </fieldset>
+        <div id="but3d" style="display: block;"></div>
+        <fieldset>
+          <legend>Status</legend>
+          <div id="prg">Progress: 0%</div>
+          <div>
+            <div id="barbg">
+              <div id="bar" class="bar"></div>
+            </div>
+          </div>
+        </fieldset>
+        <div id="but3d" style="display: block;"></div>
+        <fieldset>
+          <legend>Debug</legend>
+          <div id="updatemsg"></div>
+        </fieldset>
+      </form>
+
+      <div id="but3d" style="display: block;"></div>
+      <p>
+      <button id="upload" class="button bgrn">Upload</button>
+      <div id="but3d" style="display: block;"></div>
+      <p>
+      <div id="but3d" style="display: block;"></div>
+      <p>
+      <button id="settings" class="button">Settings</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
