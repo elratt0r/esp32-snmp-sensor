@@ -27,16 +27,18 @@ void webserver_setup()
 
     // GET /
     server.on("/", HTTP_GET, [](AsyncWebServerRequest* request) {
-        AsyncWebServerResponse* response = request->beginResponse_P(
-            200, "text/html", inc_index_html, inc_index_html_len);
+        AsyncWebServerResponse* response = request->beginResponse(
+            200, "text/html", inc_index_html, inc_index_html_len
+	);
         response->addHeader("Access-Control-Allow-Origin", "*");
         request->send(response);
     });
 
     // GET /script.js
     server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest* request) {
-        AsyncWebServerResponse* response = request->beginResponse_P(
-            200, "application/javascript", inc_script_js, inc_script_js_len);
+        AsyncWebServerResponse* response = request->beginResponse(
+            200, "application/javascript", inc_script_js, inc_script_js_len
+	);
         response->addHeader("Access-Control-Allow-Origin", "*");
         request->send(response);
     });
