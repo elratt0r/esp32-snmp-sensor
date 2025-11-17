@@ -47,6 +47,28 @@ void read_config(void)
             snprintf(cfg.snmp_rw_community, sizeof(cfg.snmp_rw_community) ,"private");
         }
 
+        if (cfg.version == 3 && cfg_ver_num == 4) {
+            // update struct changes
+            char buffer[811];
+            EEPROM.readBytes(0, buffer, 811);
+            char *ptr = buffer;
+
+            // skip version byte
+            ptr += 1;
+
+            // copy data and shift pointer
+            memcpy(&cfg.wifi_ssid, ptr, sizeof(cfg.wifi_ssid));
+            ptr += 33;
+            memcpy(&cfg.wifi_secret, ptr, sizeof(cfg.wifi_secret));
+            ptr += 65;
+            memcpy(&cfg.wifi_hostname, ptr, sizeof(cfg.wifi_hostname));
+            ptr += 256;
+
+            // copy remaining data
+            size_t remain = sizeof(cfg) - sizeof(cfg.version) - sizeof(cfg.wifi_ssid) - sizeof(cfg.wifi_secret) - sizeof(cfg.wifi_hostname);
+            memcpy(&cfg.wifi_opmode, ptr, remain);
+        }
+
         cfg.version = cfg_ver_num;
         write_config();
     }

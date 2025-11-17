@@ -7,14 +7,14 @@
 #define OPMODE_ETH_CLIENT 2
 
 // settings struct version
-#define cfg_ver_num 3
+#define cfg_ver_num 4
 
 typedef struct {
     // version 1
     byte version;
-    char wifi_ssid[33];
-    char wifi_secret[65];
-    char wifi_hostname[256];
+    char wifi_ssid[32];         // was: 33
+    char wifi_secret[64];       // was: 65
+    char wifi_hostname[32];     // was: 256
     byte wifi_opmode;
     bool wifi_powersave;
     bool wifi_ap_fallback;
