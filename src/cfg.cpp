@@ -24,9 +24,9 @@ void read_config(void)
         if (cfg.version == 0xff) {
             uint8_t mac[10];
             WiFi.macAddress(mac);
-            sprintf(cfg.wifi_ssid, "OSENS-%02X%02X%02X", mac[3], mac[4], mac[5]);
-            strcpy(cfg.wifi_secret, "");
-            strcpy(cfg.wifi_hostname, cfg.wifi_ssid);
+            snprintf(cfg.wifi_ssid, MAX_SSID_LEN, "OSENS-%02X%02X%02X", mac[3], mac[4], mac[5]);
+            snprintf(cfg.wifi_secret, MAX_PASSPHRASE_LEN, "");
+            snprintf(cfg.wifi_hostname, MAX_SSID_LEN, cfg.wifi_ssid);
             cfg.wifi_opmode = OPMODE_ETH_CLIENT;
             cfg.wifi_powersave = false;
             cfg.wifi_ap_fallback = true;
@@ -41,10 +41,10 @@ void read_config(void)
         }
 
         if (cfg.version == 0xff || cfg.version < 3) {
-            strcpy(cfg.snmp_contact, "admin");
-            strcpy(cfg.snmp_location, "");
-            strcpy(cfg.snmp_ro_community, "public");
-            strcpy(cfg.snmp_rw_community, "private");
+            snprintf(cfg.snmp_contact, sizeof(cfg.snmp_contact), "admin");
+            snprintf(cfg.snmp_location, sizeof(cfg.snmp_location), "");
+            snprintf(cfg.snmp_ro_community, sizeof(cfg.snmp_ro_community) ,"public");
+            snprintf(cfg.snmp_rw_community, sizeof(cfg.snmp_rw_community) ,"private");
         }
 
         cfg.version = cfg_ver_num;
@@ -104,9 +104,9 @@ String get_settings(void)
 boolean parse_settings(JsonDocument json)
 {
     if (json["wifi_hostname"].is<const char*>())
-        strncpy(cfg.wifi_hostname, json["wifi_hostname"], sizeof(cfg.wifi_hostname));
+        snprintf(cfg.wifi_hostname, sizeof(cfg.wifi_hostname), "%s", json["wifi_hostname"]);
     if (json["wifi_ssid"].is<const char*>())
-        strncpy(cfg.wifi_ssid, json["wifi_ssid"], sizeof(cfg.wifi_ssid));
+        snprintf(cfg.wifi_ssid, sizeof(cfg.wifi_ssid), "%s", json["wifi_ssid"]);
     if (json["wifi_opmode"].is<int>())
         cfg.wifi_opmode = json["wifi_opmode"];
     if (json["wifi_powersave"].is<bool>())
@@ -114,25 +114,25 @@ boolean parse_settings(JsonDocument json)
     if (json["wifi_ap_fallback"].is<bool>())
         cfg.wifi_ap_fallback = json["wifi_ap_fallback"];
     if (json["wifi_secret"].is<const char*>())
-        strncpy(cfg.wifi_secret, json["wifi_secret"], sizeof(cfg.wifi_secret));
+        snprintf(cfg.wifi_secret, sizeof(cfg.wifi_secret), "%s", json["wifi_secret"]);
     if (json["static_ip"].is<bool>())
         cfg.static_ip = json["static_ip"];
     if (json["ip_addr"].is<const char*>())
-        strncpy(cfg.ip_addr, json["ip_addr"], sizeof(cfg.ip_addr));
+        snprintf(cfg.ip_addr, sizeof(cfg.ip_addr), "%s", json["ip_addr"]);
     if (json["ip_gw"].is<const char*>())
-        strncpy(cfg.ip_gw, json["ip_gw"], sizeof(cfg.ip_gw));
+        snprintf(cfg.ip_gw, sizeof(cfg.ip_gw), "%s", json["ip_gw"]);
     if (json["ip_netmask"].is<const char*>())
-        strncpy(cfg.ip_netmask, json["ip_netmask"], sizeof(cfg.ip_netmask));
+        snprintf(cfg.ip_netmask, sizeof(cfg.ip_netmask), "%s", json["ip_netmask"]);
     if (json["ip_dns"].is<const char*>())
-        strncpy(cfg.ip_dns, json["ip_dns"], sizeof(cfg.ip_dns));
+        snprintf(cfg.ip_dns, sizeof(cfg.ip_dns), "%s", json["ip_dns"]);
     if (json["snmp_contact"].is<const char*>())
-        strncpy(cfg.snmp_contact, json["snmp_contact"], sizeof(cfg.snmp_contact));
+        snprintf(cfg.snmp_contact, sizeof(cfg.snmp_contact), "%s", json["snmp_contact"]);
     if (json["snmp_location"].is<const char*>())
-        strncpy(cfg.snmp_location, json["snmp_location"], sizeof(cfg.snmp_location));
+        snprintf(cfg.snmp_location, sizeof(cfg.snmp_location), "%s", json["snmp_location"]);
     if (json["snmp_ro_community"].is<const char*>())
-        strncpy(cfg.snmp_ro_community, json["snmp_ro_community"], sizeof(cfg.snmp_ro_community));
+        snprintf(cfg.snmp_ro_community, sizeof(cfg.snmp_ro_community), "%s", json["snmp_ro_community"]);
     if (json["snmp_rw_community"].is<const char*>())
-        strncpy(cfg.snmp_rw_community, json["snmp_rw_community"], sizeof(cfg.snmp_rw_community));
+        snprintf(cfg.snmp_rw_community, sizeof(cfg.snmp_rw_community), "%s", json["snmp_rw_community"]);
 
     write_config();
     return true;
