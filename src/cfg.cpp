@@ -104,9 +104,9 @@ String get_settings(void)
 boolean parse_settings(JsonDocument json)
 {
     if (json["wifi_hostname"].is<const char*>())
-        snprintf(cfg.wifi_hostname, sizeof(cfg.wifi_hostname), "%s", json["wifi_hostname"]);
+        snprintf(cfg.wifi_hostname, sizeof(cfg.wifi_hostname), "%s", (const char*)json["wifi_hostname"]);
     if (json["wifi_ssid"].is<const char*>())
-        snprintf(cfg.wifi_ssid, sizeof(cfg.wifi_ssid), "%s", json["wifi_ssid"]);
+        snprintf(cfg.wifi_ssid, sizeof(cfg.wifi_ssid), "%s", (const char*)json["wifi_ssid"]);
     if (json["wifi_opmode"].is<int>())
         cfg.wifi_opmode = json["wifi_opmode"];
     if (json["wifi_powersave"].is<bool>())
@@ -114,26 +114,27 @@ boolean parse_settings(JsonDocument json)
     if (json["wifi_ap_fallback"].is<bool>())
         cfg.wifi_ap_fallback = json["wifi_ap_fallback"];
     if (json["wifi_secret"].is<const char*>())
-        snprintf(cfg.wifi_secret, sizeof(cfg.wifi_secret), "%s", json["wifi_secret"]);
+        snprintf(cfg.wifi_secret, sizeof(cfg.wifi_secret), "%s", (const char*)json["wifi_secret"]);
     if (json["static_ip"].is<bool>())
         cfg.static_ip = json["static_ip"];
     if (json["ip_addr"].is<const char*>())
-        snprintf(cfg.ip_addr, sizeof(cfg.ip_addr), "%s", json["ip_addr"]);
+        snprintf(cfg.ip_addr, sizeof(cfg.ip_addr), "%s", (const char*)json["ip_addr"]);
     if (json["ip_gw"].is<const char*>())
-        snprintf(cfg.ip_gw, sizeof(cfg.ip_gw), "%s", json["ip_gw"]);
+        snprintf(cfg.ip_gw, sizeof(cfg.ip_gw), "%s", (const char*)json["ip_gw"]);
     if (json["ip_netmask"].is<const char*>())
-        snprintf(cfg.ip_netmask, sizeof(cfg.ip_netmask), "%s", json["ip_netmask"]);
+        snprintf(cfg.ip_netmask, sizeof(cfg.ip_netmask), "%s", (const char*)json["ip_netmask"]);
     if (json["ip_dns"].is<const char*>())
-        snprintf(cfg.ip_dns, sizeof(cfg.ip_dns), "%s", json["ip_dns"]);
+        snprintf(cfg.ip_dns, sizeof(cfg.ip_dns), "%s", (const char*)json["ip_dns"]);
     if (json["snmp_contact"].is<const char*>())
-        snprintf(cfg.snmp_contact, sizeof(cfg.snmp_contact), "%s", json["snmp_contact"]);
+        snprintf(cfg.snmp_contact, sizeof(cfg.snmp_contact), "%s", (const char*)json["snmp_contact"]);
     if (json["snmp_location"].is<const char*>())
-        snprintf(cfg.snmp_location, sizeof(cfg.snmp_location), "%s", json["snmp_location"]);
+        snprintf(cfg.snmp_location, sizeof(cfg.snmp_location), "%s", (const char*)json["snmp_location"]);
     if (json["snmp_ro_community"].is<const char*>())
-        snprintf(cfg.snmp_ro_community, sizeof(cfg.snmp_ro_community), "%s", json["snmp_ro_community"]);
+        snprintf(cfg.snmp_ro_community, sizeof(cfg.snmp_ro_community), "%s", (const char*)json["snmp_ro_community"]);
     if (json["snmp_rw_community"].is<const char*>())
-        snprintf(cfg.snmp_rw_community, sizeof(cfg.snmp_rw_community), "%s", json["snmp_rw_community"]);
+        snprintf(cfg.snmp_rw_community, sizeof(cfg.snmp_rw_community), "%s", (const char*)json["snmp_rw_community"]);
 
+    dump_config();
     write_config();
     return true;
 }
