@@ -21,17 +21,6 @@
 #include "sensors.h"
 #include "snmp.h"
 
-/*
-Board: OLIMEX ESP32-POE
-Arduino IDE Libraries:
-- esp32 by Espressif Systems @ 3.0.7
-- ArduinoJson by Benoit Blanchon @ 7.2.1
-- AsyncTCP by Me-No-Dev @ 3.3.1
-- ESP Async WebServer by Me-No-Dev @ 3.4.5
-- SNMP_Agent by Aidan Cyr @ 2.1.0
-- Adafruit Unified Sensor by Adafruit @ 1.1.14
-- DHT sensor library by Adafruit @ 1.4.6
-*/ 
 
 #define BUTTON_PIN 34
 #define DHT_PIN 5
