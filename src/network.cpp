@@ -33,6 +33,7 @@ void network_setup(void)
             delay(500); // needed to let esp-idf settle
             ETH.config(myIP, myGW, myNM, myDNS);
         }
+        ETH.enableIpV6();
     } else if (cfg.wifi_opmode == OPMODE_WIFI_STATION) {
         Serial.println("[NET] mode: WIFI_STA");
         WiFi.disconnect();
@@ -74,6 +75,7 @@ void network_event(WiFiEvent_t event)
     case ARDUINO_EVENT_ETH_CONNECTED:
         // This will happen when the Ethernet cable is plugged
         Serial.println("[NET] ETH connected");
+        ETH.enableIpV6();   // Quirk: IPv6 fails otherwise if in dhcp mode on boot
         break;
 
     case ARDUINO_EVENT_ETH_DISCONNECTED:
